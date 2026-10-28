@@ -1,0 +1,113 @@
+{
+  "info": {
+    "name": "art-gallery-management-system-midterm",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "A2 Save Art Style",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Painting\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/art-styles/save",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "art-styles", "save"]
+        }
+      }
+    },
+    {
+      "name": "A2 Save Hall",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"hallNumber\": 1,\n  \"name\": \"Hall 1\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/halls/save",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "halls", "save"]
+        }
+      }
+    },
+    {
+      "name": "B1 Artists By Last Name",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/artists/by-last-name?lastName=niyonzima",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "artists", "by-last-name"],
+          "query": [
+            { "key": "lastName", "value": "niyonzima" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "C4 Artists Of Curator",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/artists/of-curator/00000000-0000-0000-0000-000000000000",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "artists", "of-curator", "00000000-0000-0000-0000-000000000000"]
+        }
+      }
+    },
+    {
+      "name": "D2 Change Exhibition Status",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "http://localhost:8080/api/exhibitions/00000000-0000-0000-0000-000000000000/status?status=OPEN",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "exhibitions", "00000000-0000-0000-0000-000000000000", "status"],
+          "query": [
+            { "key": "status", "value": "OPEN" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "E1 Save Artwork Sale",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"artworkTitle\": \"Sunset over Kivu\",\n  \"buyerRemarks\": \"Collected by a private buyer\",\n  \"price\": 350000\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/artwork-sales/save?exhibitionId=00000000-0000-0000-0000-000000000000",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "artwork-sales", "save"],
+          "query": [
+            { "key": "exhibitionId", "value": "00000000-0000-0000-0000-000000000000" }
+          ]
+        }
+      }
+    }
+  ]
+}
