@@ -97,10 +97,7 @@ public class CuratorService {
         if (curator.getHall() != null && curator.getHall().getId().equals(hall.getId())) {
             return "Hall changed successfully";
         }
-        Optional<Curator> occupant = curatorRepository.findByHall(hall).stream()
-                .filter(candidate -> !candidate.getId().equals(curatorId))
-                .findFirst();
-        if (occupant.isPresent()) {
+        if (curatorRepository.existsByHall(hall)) {
             return "That hall is taken by another curator";
         }
         curator.setHall(hall);

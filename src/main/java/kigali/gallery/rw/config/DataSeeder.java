@@ -91,7 +91,7 @@ public class DataSeeder {
                 ex7.setArtist(artist1); ex7.setCurator(curator1); exhibitionRepository.save(ex7);
 
                 Exhibition ex8 = new Exhibition(LocalDate.of(2026, 11, 10), ExhibitionStatus.PLANNED, "Threads of Memory");
-                ex8.setArtist(artist3); ex8.setCurator(curator2); exhibitionRepository.save(ex8);
+                ex8.setArtist(artist5); ex8.setCurator(curator2); exhibitionRepository.save(ex8);
 
                 Exhibition ex9 = new Exhibition(LocalDate.of(2026, 11, 12), ExhibitionStatus.CANCELLED, "Urban Bloom");
                 ex9.setArtist(artist4); ex9.setCurator(curator3); exhibitionRepository.save(ex9);

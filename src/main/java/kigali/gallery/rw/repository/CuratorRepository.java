@@ -20,8 +20,5 @@ public interface CuratorRepository extends JpaRepository<Curator, UUID> {
     @Query("SELECT c FROM Curator c WHERE c.hall IS NULL")
     List<Curator> findByHallIsNull();
 
-    @Query("SELECT c FROM Curator c WHERE c.hall = :hall")
-    List<Curator> findByHall(@Param("hall") Hall hall);
-
-    boolean existsByHallHallNumber(int hallNumber);
+    boolean existsByHall(Hall hall);
 }

@@ -10,8 +10,8 @@ This project is the backend for the mid-term exam described in the course docume
 - Java 21
 - Spring Boot 3.3.5
 - Spring Data JPA
-- H2 database (default local testing mode)
-- PostgreSQL driver included for the required exam setup
+- PostgreSQL
+- H2 for automated tests
 
 ## Main domain entities
 - ArtStyle
@@ -25,8 +25,12 @@ This project is the backend for the mid-term exam described in the course docume
 The project includes the required CRUD endpoints, derived queries, JPQL queries, business-rule validations, artwork sale logic, dashboard summary, and pagination endpoints described in the assignment.
 
 ## Run locally
-1. Open a terminal in the project root.
-2. Run:
+1. Create a PostgreSQL database named `art_gallery`.
+2. Set `DB_PASSWORD` in PowerShell if your PostgreSQL user has a password:
+   ```powershell
+   $env:DB_PASSWORD = "your-postgres-password"
+   ```
+3. Open a terminal in the project root and run:
    ```bash
    mvn spring-boot:run
    ```
@@ -34,9 +38,6 @@ The project includes the required CRUD endpoints, derived queries, JPQL queries,
    ```text
    http://localhost:8080
    ```
-
-## PostgreSQL option
-The project includes the PostgreSQL dependency and the exam specification expects PostgreSQL in the lecture environment. If you want to switch to PostgreSQL, update the datasource settings in `src/main/resources/application.properties`.
 
 ## Project structure
 - `src/main/java/kigali/gallery/rw/domain` — entity classes

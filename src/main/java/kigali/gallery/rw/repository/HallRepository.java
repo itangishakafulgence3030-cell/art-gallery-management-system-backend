@@ -17,6 +17,6 @@ public interface HallRepository extends JpaRepository<Hall, UUID> {
 
     boolean existsByHallNumber(int hallNumber);
 
-    @Query("SELECT h FROM Hall h LEFT JOIN Curator c ON c.hall = h WHERE c.id IS NULL ORDER BY h.hallNumber ASC")
+    @Query("SELECT h FROM Hall h WHERE NOT EXISTS (SELECT c FROM Curator c WHERE c.hall = h) ORDER BY h.hallNumber ASC")
     List<Hall> findFreeHalls();
 }
