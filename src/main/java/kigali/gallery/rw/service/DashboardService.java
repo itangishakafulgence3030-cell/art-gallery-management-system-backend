@@ -11,23 +11,22 @@ import kigali.gallery.rw.repository.ArtistRepository;
 import kigali.gallery.rw.repository.ArtworkSaleRepository;
 import kigali.gallery.rw.repository.CuratorRepository;
 import kigali.gallery.rw.repository.ExhibitionRepository;
-import kigali.gallery.rw.repository.HallRepository;
 
 @Service
 public class DashboardService {
 
     private final ArtistRepository artistRepository;
     private final CuratorRepository curatorRepository;
-    private final HallRepository hallRepository;
+    private final HallService hallService;
     private final ExhibitionRepository exhibitionRepository;
     private final ArtworkSaleRepository artworkSaleRepository;
 
     public DashboardService(ArtistRepository artistRepository, CuratorRepository curatorRepository,
-            HallRepository hallRepository, ExhibitionRepository exhibitionRepository,
+            HallService hallService, ExhibitionRepository exhibitionRepository,
             ArtworkSaleRepository artworkSaleRepository) {
         this.artistRepository = artistRepository;
         this.curatorRepository = curatorRepository;
-        this.hallRepository = hallRepository;
+        this.hallService = hallService;
         this.exhibitionRepository = exhibitionRepository;
         this.artworkSaleRepository = artworkSaleRepository;
     }
@@ -36,12 +35,7 @@ public class DashboardService {
         Map<String, Long> summary = new LinkedHashMap<>();
         summary.put("artists", artistRepository.count());
         summary.put("curators", curatorRepository.count());
-        long occupiedHallCount = curatorRepository.findAll().stream()
-                .filter(curator -> curator.getHall() != null)
-                .map(curator -> curator.getHall().getId())
-                .distinct()
-                .count();
-        summary.put("freeHalls", hallRepository.count() - occupiedHallCount);
+        summary.put("freeHalls", (long) hallService.findFree().size());
         summary.put("exhibitionsToday", exhibitionRepository.countByOpeningDate(LocalDate.now()));
         summary.put("planned", exhibitionRepository.countByStatus(ExhibitionStatus.PLANNED));
         summary.put("artworkSales", artworkSaleRepository.count());

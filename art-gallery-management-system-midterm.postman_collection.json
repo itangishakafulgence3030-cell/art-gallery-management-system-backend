@@ -3,108 +3,413 @@
     "name": "art-gallery-management-system-midterm",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "curatorAlineId", "value": "" },
+    { "key": "curatorEricId", "value": "" },
+    { "key": "artistAliceId", "value": "" },
+    { "key": "plannedExhibitionId", "value": "" },
+    { "key": "openExhibitionId", "value": "" },
+    { "key": "closedExhibitionId", "value": "" },
+    { "key": "saleExhibitionId", "value": "" },
+    { "key": "paintingId", "value": "" },
+    { "key": "testSaleId", "value": "" },
+    { "key": "testSaleTitle", "value": "" }
+  ],
   "item": [
     {
-      "name": "A2 Save Art Style",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Painting\"\n}",
-          "options": { "raw": { "language": "json" } }
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/art-styles/save",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "art-styles", "save"]
-        }
-      }
-    },
-    {
-      "name": "A2 Save Hall",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"hallNumber\": 1,\n  \"name\": \"Hall 1\"\n}",
-          "options": { "raw": { "language": "json" } }
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/halls/save",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "halls", "save"]
-        }
-      }
-    },
-    {
-      "name": "B1 Artists By Last Name",
+      "name": "Setup - Capture seeded exhibition IDs",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:8080/api/artists/by-last-name?lastName=niyonzima",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
+          "raw": "{{baseUrl}}/api/exhibitions/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "all"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Seeded exhibitions are available', function () { pm.response.to.have.status(200); });",
+              "const rows = pm.response.json();",
+              "const byTheme = (theme) => rows.find((row) => row.theme === theme);",
+              "pm.collectionVariables.set('curatorAlineId', byTheme('Lake Lights').curator.id);",
+              "pm.collectionVariables.set('curatorEricId', byTheme('Stone Echoes').curator.id);",
+              "pm.collectionVariables.set('artistAliceId', byTheme('Lake Lights').artist.id);",
+              "pm.collectionVariables.set('plannedExhibitionId', byTheme('Lake Lights').id);",
+              "pm.collectionVariables.set('openExhibitionId', byTheme('Stone Echoes').id);",
+              "pm.collectionVariables.set('closedExhibitionId', byTheme('Sunset Over Kivu').id);",
+              "pm.collectionVariables.set('saleExhibitionId', byTheme('City in Motion').id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Capture Painting ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/art-styles/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "art-styles", "all"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Art styles are available', function () { pm.response.to.have.status(200); });",
+              "const painting = pm.response.json().find((style) => style.name === 'Painting');",
+              "pm.expect(painting).to.exist;",
+              "pm.collectionVariables.set('paintingId', painting.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "A2 - All Art Styles",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/art-styles/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "art-styles", "all"]
+        }
+      }
+    },
+    {
+      "name": "A2 - All Halls",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/halls/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "halls", "all"]
+        }
+      }
+    },
+    {
+      "name": "A2 - All Curators",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/curators/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "curators", "all"]
+        }
+      }
+    },
+    {
+      "name": "A2 - All Artists",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/artists/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "artists", "all"]
+        }
+      }
+    },
+    {
+      "name": "A2 - All Exhibitions",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "all"]
+        }
+      }
+    },
+    {
+      "name": "B1 - Artists By Last Name",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/artists/by-last-name?lastName=niyonzima",
+          "host": ["{{baseUrl}}"],
           "path": ["api", "artists", "by-last-name"],
+          "query": [{ "key": "lastName", "value": "niyonzima" }]
+        }
+      }
+    },
+    {
+      "name": "B2 - Exhibitions By Status",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/by-status?status=PLANNED",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "by-status"],
+          "query": [{ "key": "status", "value": "PLANNED" }]
+        }
+      }
+    },
+    {
+      "name": "B3 - Exhibitions Between Dates",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/between?start=2026-10-01&end=2026-10-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "between"],
           "query": [
-            { "key": "lastName", "value": "niyonzima" }
+            { "key": "start", "value": "2026-10-01" },
+            { "key": "end", "value": "2026-10-31" }
           ]
         }
       }
     },
     {
-      "name": "C4 Artists Of Curator",
+      "name": "C1 - Curators By Art Style",
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:8080/api/artists/of-curator/00000000-0000-0000-0000-000000000000",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
+          "raw": "{{baseUrl}}/api/curators/by-art-style?name=painting",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "curators", "by-art-style"],
+          "query": [{ "key": "name", "value": "painting" }]
+        }
+      }
+    },
+    {
+      "name": "C2 - Free Halls",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/halls/free",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "halls", "free"]
+        }
+      }
+    },
+    {
+      "name": "C3 - Unused Art Styles",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/art-styles/unused",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "art-styles", "unused"]
+        }
+      }
+    },
+    {
+      "name": "C4 - Artists Of Curator",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/artists/of-curator/{{curatorAlineId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "artists", "of-curator", "{{curatorAlineId}}"]
+        }
+      }
+    },
+    {
+      "name": "C4 - Missing Curator (404)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/artists/of-curator/00000000-0000-0000-0000-000000000000",
+          "host": ["{{baseUrl}}"],
           "path": ["api", "artists", "of-curator", "00000000-0000-0000-0000-000000000000"]
         }
       }
     },
     {
-      "name": "D2 Change Exhibition Status",
+      "name": "D1 - Past Exhibition Date (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"openingDate\": \"2020-01-01\",\n  \"status\": \"OPEN\",\n  \"theme\": \"Past date validation\",\n  \"artist\": { \"id\": \"{{artistAliceId}}\" },\n  \"curator\": { \"id\": \"{{curatorAlineId}}\" }\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/save",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "save"]
+        }
+      }
+    },
+    {
+      "name": "D2 - Invalid Status Transition (400)",
       "request": {
         "method": "PATCH",
         "url": {
-          "raw": "http://localhost:8080/api/exhibitions/00000000-0000-0000-0000-000000000000/status?status=OPEN",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "exhibitions", "00000000-0000-0000-0000-000000000000", "status"],
+          "raw": "{{baseUrl}}/api/exhibitions/{{saleExhibitionId}}/status?status=PLANNED",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "{{saleExhibitionId}}", "status"],
+          "query": [{ "key": "status", "value": "PLANNED" }]
+        }
+      }
+    },
+    {
+      "name": "D3 - Art Style Already Added (409)",
+      "request": {
+        "method": "PUT",
+        "url": {
+          "raw": "{{baseUrl}}/api/curators/{{curatorAlineId}}/art-styles/{{paintingId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "curators", "{{curatorAlineId}}", "art-styles", "{{paintingId}}"]
+        }
+      }
+    },
+    {
+      "name": "D4 - Hall Occupied (409)",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "{{baseUrl}}/api/curators/{{curatorAlineId}}/hall?hallNumber=2",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "curators", "{{curatorAlineId}}", "hall"],
+          "query": [{ "key": "hallNumber", "value": "2" }]
+        }
+      }
+    },
+    {
+      "name": "E1 - Save Artwork Sale",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"artworkTitle\": \"{{testSaleTitle}}\",\n  \"buyerRemarks\": \"Temporary sale for the Postman demo\",\n  \"price\": 350000\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/artwork-sales/save?exhibitionId={{closedExhibitionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "artwork-sales", "save"],
+          "query": [{ "key": "exhibitionId", "value": "{{closedExhibitionId}}" }]
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('testSaleTitle', 'Postman verification sale ' + Date.now());"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "E2 - Artwork Sale History By Artist",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/artwork-sales/artist/ART-2024-07",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "artwork-sales", "artist", "ART-2024-07"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const sale = pm.response.json().find((row) => row.artworkTitle === pm.collectionVariables.get('testSaleTitle'));",
+              "pm.test('New sale appears in the artist history', function () { pm.expect(sale).to.exist; });",
+              "if (sale) pm.collectionVariables.set('testSaleId', sale.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "E3 - Delete Temporary Artwork Sale",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/api/artwork-sales/delete/{{testSaleId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "artwork-sales", "delete", "{{testSaleId}}"]
+        }
+      }
+    },
+    {
+      "name": "E3 - Protect Exhibition With Sales (409)",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/delete/{{saleExhibitionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "delete", "{{saleExhibitionId}}"]
+        }
+      }
+    },
+    {
+      "name": "E3 - Missing Artwork Sale (404)",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/api/artwork-sales/delete/00000000-0000-0000-0000-000000000000",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "artwork-sales", "delete", "00000000-0000-0000-0000-000000000000"]
+        }
+      }
+    },
+    {
+      "name": "F1 - Exhibition Counts By Status",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/stats/by-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "stats", "by-status"]
+        }
+      }
+    },
+    {
+      "name": "F2 - Cancel Day With No Matches",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/cancel-day?curatorId=00000000-0000-0000-0000-000000000000&date=2026-10-20",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "cancel-day"],
           "query": [
-            { "key": "status", "value": "OPEN" }
+            { "key": "curatorId", "value": "00000000-0000-0000-0000-000000000000" },
+            { "key": "date", "value": "2026-10-20" }
           ]
         }
       }
     },
     {
-      "name": "E1 Save Artwork Sale",
+      "name": "Bonus - Dashboard Summary",
       "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"artworkTitle\": \"Sunset over Kivu\",\n  \"buyerRemarks\": \"Collected by a private buyer\",\n  \"price\": 350000\n}",
-          "options": { "raw": { "language": "json" } }
-        },
+        "method": "GET",
         "url": {
-          "raw": "http://localhost:8080/api/artwork-sales/save?exhibitionId=00000000-0000-0000-0000-000000000000",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "artwork-sales", "save"],
+          "raw": "{{baseUrl}}/api/dashboard/summary",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "dashboard", "summary"]
+        }
+      }
+    },
+    {
+      "name": "Bonus - Paginated Exhibitions",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/exhibitions/page?page=0&size=5&sort=openingDate,desc",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "exhibitions", "page"],
           "query": [
-            { "key": "exhibitionId", "value": "00000000-0000-0000-0000-000000000000" }
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "5" },
+            { "key": "sort", "value": "openingDate,desc" }
           ]
         }
       }
