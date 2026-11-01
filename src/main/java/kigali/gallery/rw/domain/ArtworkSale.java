@@ -20,16 +20,16 @@ public class ArtworkSale {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "artwork_title",nullable = false)
     private String artworkTitle;
 
-    @Column(nullable = false)
+    @Column(name = "buyer_remarks",nullable = false)
     private String buyerRemarks;
 
-    @Column(nullable = false)
+    @Column(name = "price",nullable = false)
     private int price;
 
-    @Column(nullable = false)
+    @Column(name = "sale_date",nullable = false)
     private LocalDate saleDate;
 
     @ManyToOne

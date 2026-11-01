@@ -17,19 +17,19 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "first_name",nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "last_name",nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "artist_code",nullable = false, unique = true)
     private String artistCode;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "phone",nullable = false)
     private String phone;
 
     public Artist() {

@@ -17,10 +17,10 @@ public class Hall {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "hall_number",nullable = false, unique = true)
     private int hallNumber;
 
-    @Column(nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
 
     public Hall() {

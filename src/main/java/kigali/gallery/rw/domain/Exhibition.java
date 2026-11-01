@@ -22,14 +22,14 @@ public class Exhibition {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "opening_date",nullable = false)
     private LocalDate openingDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status",nullable = false)
     private ExhibitionStatus status;
 
-    @Column(nullable = false)
+    @Column(name = "theme",nullable = false)
     private String theme;
 
     @ManyToOne
